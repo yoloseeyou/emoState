@@ -1,9 +1,12 @@
 ![项目Logo](public/logo.webp)
+
 # 当代互联网用户精神状态诊断 (Internet Mental State Diagnosis)
 
 ![License](https://img.shields.io/badge/license-MIT-blue.svg)
 ![Vue](https://img.shields.io/badge/Vue.js-3.x-green.svg)
 ![Tailwind](https://img.shields.io/badge/Tailwind_CSS-3.x-38bdf8.svg)
+
+[当代互联网用户精神状态诊断](https://emo.seeyou.cool/)
 
 ## 简介 (Introduction)
 
