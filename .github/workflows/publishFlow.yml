@@ -1,0 +1,39 @@
+name: Push to Production
+
+on:
+  push:
+    branches: [main] # 只有推送到 main 分支时触发
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      # 核心：触发webhook
+      - name: Notify server via webhook
+        continue-on-error: true
+        run: |
+          curl -X POST "${{ secrets.DEPLOY_URL }}" \
+            -H "token: ${{ secrets.DEPLOY_TOKEN }}" \
+            --data-urlencode "projectPath=${{ secrets.PROJECT_PATH }}" \
+            --data-urlencode "projectPath=${{ secrets.DEPLOY_PATH }}" \
+            --data-urlencode "deployType=${{ secrets.DEPLOY_TYPE }}"\
+            --max-time 600 \
+            --connect-timeout 30 \
+            --retry 3 \
+            --retry-delay 5 \
+            --silent \
+            --show-error
+          exit_code=$?
+          echo "exit_code=$exit_code" >> $GITHUB_OUTPUT
+          # 错误18是正常的，表示部署完成但连接提前关闭
+          if [ $exit_code -eq 0 ] || [ $exit_code -eq 18 ]; then
+            echo "✅ Deployment triggered successfully"
+            echo "status=success" >> $GITHUB_OUTPUT
+          else
+            echo "❌ Deployment failed with exit code: $exit_code"
+            echo "status=failure" >> $GITHUB_OUTPUT
+          fi
+      - name: Check Deployment Status
+        if: steps.deploy.outputs.status == 'failure'
+        run: |
+          echo "Deployment failed with exit code: ${{ steps.deploy.outputs.exit_code }}"
+          exit 1
