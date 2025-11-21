@@ -14,7 +14,7 @@ jobs:
           curl -X POST "${{ secrets.DEPLOY_URL }}" \
             -H "token: ${{ secrets.DEPLOY_TOKEN }}" \
             --data-urlencode "projectPath=${{ secrets.PROJECT_PATH }}" \
-            --data-urlencode "projectPath=${{ secrets.DEPLOY_PATH }}" \
+            --data-urlencode "deployPath=${{ secrets.DEPLOY_PATH }}" \
             --data-urlencode "deployType=${{ secrets.DEPLOY_TYPE }}"\
             --max-time 600 \
             --connect-timeout 30 \
