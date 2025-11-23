@@ -17,7 +17,7 @@ const props = defineProps({
 const reportRef = ref(null);
 const posterImageUrl = ref('');
 const isGenerating = ref(false);
-
+const emits = defineEmits(['retry']);
 const currentDate = new Date().toLocaleDateString();
 
 // 生成海报图（包含二维码）
@@ -292,7 +292,7 @@ const regeneratePoster = () => {
             📸 生成诊断书海报
           </button>
           <button
-            @click="$emit('retry')"
+            @click="emits('retry')"
             class="border-2 border-black px-6 py-2 font-bold hover:bg-gray-100 transition-colors"
           >
             🔄 再测一次
