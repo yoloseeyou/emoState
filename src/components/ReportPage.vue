@@ -304,7 +304,7 @@ const regeneratePoster = () => {
           src="https://seeyou.cool/storage/img?key=WHlEbHk0MjkwYTY0ZUZXdExxYnFMZEN4aEFjRGYzK1JZNDl0QkE9PQ=="
           alt=""
         />
-        <span class="font-bold text-xl">瞅一眼</span>
+        <span class="font-bold text-xl">瞅一眼作者</span>
       </div>
       <div class="">
         <img src="" alt="" />
