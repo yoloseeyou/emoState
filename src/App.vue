@@ -1,12 +1,20 @@
 <script setup>
-import { ref, computed } from 'vue';
+import { ref } from 'vue';
 import LandingPage from './components/LandingPage.vue';
+import QuestionnairePage from './components/QuestionnairePage.vue';
 import ScanningPage from './components/ScanningPage.vue';
 import ReportPage from './components/ReportPage.vue';
-import { diagnoses, symptoms, causes, prescriptions } from './data/corpus';
+import {
+  diagnoses,
+  symptoms,
+  causes,
+  prescriptions,
+  questionnaire,
+} from './data/corpus';
 
 const STAGES = {
   LANDING: 'landing',
+  QUESTIONNAIRE: 'questionnaire',
   SCANNING: 'scanning',
   REPORT: 'report',
 };
@@ -14,9 +22,15 @@ const STAGES = {
 const currentStage = ref(STAGES.LANDING);
 const nickname = ref('');
 const diagnosisResult = ref(null);
+const questionnaireAnswers = ref([]);
 
 const startDiagnosis = (name) => {
   nickname.value = name;
+  currentStage.value = STAGES.QUESTIONNAIRE;
+};
+
+const handleQuestionnaireComplete = (answers) => {
+  questionnaireAnswers.value = answers;
   currentStage.value = STAGES.SCANNING;
 };
 
@@ -49,10 +63,10 @@ const generateDiagnosis = () => {
 
 const resetDiagnosis = () => {
   currentStage.value = STAGES.LANDING;
-  console.log(currentStage);
 
   nickname.value = '';
   diagnosisResult.value = null;
+  questionnaireAnswers.value = [];
 };
 </script>
 
@@ -63,6 +77,12 @@ const resetDiagnosis = () => {
         <LandingPage
           v-if="currentStage === STAGES.LANDING"
           @start="startDiagnosis"
+        />
+        <QuestionnairePage
+          v-else-if="currentStage === STAGES.QUESTIONNAIRE"
+          :questions="questionnaire"
+          @complete="handleQuestionnaireComplete"
+          @back="resetDiagnosis"
         />
         <ScanningPage
           v-else-if="currentStage === STAGES.SCANNING"
